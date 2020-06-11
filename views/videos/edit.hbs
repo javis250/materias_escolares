@@ -1,0 +1,105 @@
+<div class="container mt-5" style="padding-left: 50vh;">
+    <div class="row">
+        <div class="col-md-7">
+            <form action="/videos/update/{{data.id}}" method="POST">
+                <div class="form-group">
+                    <input type="text" name="name" placeholder="Nombre de la materia" class="form-control" value="{{data.name}}"
+                        autofocus required>
+                </div>
+                <div class="form-group">
+                    <input id="red" value="{{data.id_red}}" style="display: none;">
+                    <select id="id_red" class="form-control" name="id_red" onChange="validation()">
+                        {{#each  red }}
+                        <option  value="{{id_red}}"> {{ red_name }}</option>
+                        {{/each}}
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+                    <input id="link" type="url" 
+                        title="The URL must be https://www.{red social}.com/embed/... or https://player.vimeo.com/video/..."
+                        name="url" placeholder="Link ej. http://aulavirtual.itleon.edu.mx/" class="form-control"
+                        value="{{data.url}}" onchange="videoAdd()" required>
+                </div>
+
+                <div class="form-group">
+                    <input id="category" type="text" name="category" placeholder="Categoria" class="form-control"
+                        value="{{data.category}}" required>
+                </div>
+                <div class="form-group">
+                    <textarea name="description" rows="2" class="form-control"
+                        placeholder="Descripcion"> {{data.description}}</textarea>
+                </div>
+
+
+                <button class="btn btn-success btn-block">
+                    Guardar
+                </button>
+            </form>
+        </div>
+
+        <div class="col-md-5">
+            <div id="modificacion" style="display: block;">
+                <iframe id="video_add" width="447" height="310" src="" frameborder="0"
+                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        var select = document.getElementById("id_red");
+
+        function validation() {
+            var inputUrl = document.getElementById("link");
+            var link;
+            var titulo;
+            console.log(select.value);
+
+            switch (select.value) {
+                case '1':
+                    link = "https://classroom.google.com/embed/.*";
+                    titulo = "The URL must be https://classroom.google.com/embed/...";
+                    break;
+                case '2':
+                    link = "https://www.edmodo.com/.*";
+                    titulo = "The URL must be https://www.edmodo.com/...";
+
+                    break;
+                case '3':
+                    link = "https://zoom.us/.*";
+                    titulo = "The URL must be https://zoom.us/...";
+
+                    break;
+                case '4':
+                    link = "http://aulavirtual.itleon.edu.mx/.*";
+                    titulo = "The URL must be http://aulavirtual.itleon.edu.mx/...";
+                    break;
+                default:
+                    link = "Error al procesar los datos";
+
+            }
+            inputUrl.pattern = link;
+            console.log(inputUrl.pattern);
+            inputUrl.title = titulo;
+            console.log(link);
+
+        };
+        function videoAdd() {
+            var mod = document.getElementById("modificacion");
+            var video = document.getElementById("video_add");
+            var links = document.getElementById("link");
+            alert("Se modificado la url del video")
+            mod.style = "visibility: visible";
+            video.src = links.value;
+        };
+
+        function seleccionar() {
+            var valor = document.getElementById("red");
+            var redes = document.getElementById("id_red");
+           val=valor.value;
+             document.ready = redes.value= val;
+        };
+        window.onload = seleccionar;
+
+    </script>
